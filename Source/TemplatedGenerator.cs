@@ -87,7 +87,7 @@ public sealed class {0}";
                     WriteMembers(contract, writer);
 
                     writer.WriteLine();
-                    WritePrivateCtor(writer, contract);
+                    WriteDefaultCtor(writer, contract);
 
                     writer.Write("public {0} (", contract.Name);
                     WriteParameters(contract, writer);
@@ -115,16 +115,16 @@ public sealed class {0}";
             }
         }
 
-        static void WritePrivateCtor(CodeWriter writer, Message contract)
+        static void WriteDefaultCtor(CodeWriter writer, Message contract)
         {
             var arrays = contract.Members.Where(p => p.Type.EndsWith("[]")).ToArray();
             if (!arrays.Any())
             {
-                writer.WriteLine(@"{0} () {{}}", contract.Name);
+				writer.WriteLine(@"public {0} () {{}}", contract.Name);
             }
             else
             {
-                writer.WriteLine(@"{0} () 
+				writer.WriteLine(@"public {0} () 
 {{", contract.Name);
                 writer.Indent += 1;
                 foreach (var array in arrays)
